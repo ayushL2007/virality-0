@@ -46,15 +46,18 @@ export function BenchmarkChart({
   const maxScore = Math.max(100, yourScore, averageScore, topPerformerScore)
 
   return (
-    <div className="rounded-xl border border-border bg-card p-6 card-hover">
+    <div className="relative rounded-xl border border-accent/20 bg-card p-6 card-colorful overflow-hidden">
+      <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-accent/10 to-transparent rounded-full blur-2xl -z-10" />
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
-          <BarChart3 className="h-4 w-4 text-primary" />
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent/70 shadow-lg shadow-accent/20">
+            <BarChart3 className="h-4 w-4 text-white" />
+          </div>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-accent">
             Benchmark
           </h3>
         </div>
-        <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground border border-border">
+        <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent border border-accent/20">
           {category}
         </span>
       </div>

@@ -28,17 +28,18 @@ export function CaptionRewriter({ originalCaption, rewrittenCaptions }: CaptionR
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card p-6 card-hover">
+    <div className="relative rounded-xl border border-chart-5/20 bg-card p-6 card-hover overflow-hidden">
+      <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-chart-5/10 via-accent/5 to-transparent rounded-full blur-3xl -z-10" />
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-            <Sparkles className="h-4 w-4 text-primary" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-chart-5 to-accent shadow-lg shadow-chart-5/20">
+            <Sparkles className="h-4 w-4 text-white" />
           </div>
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-chart-5">
             AI-Optimized Captions
           </h3>
         </div>
-        <span className="text-xs text-muted-foreground">{rewrittenCaptions.length} variations</span>
+        <span className="rounded-full bg-chart-5/10 px-3 py-1 text-xs font-medium text-chart-5 border border-chart-5/20">{rewrittenCaptions.length} variations</span>
       </div>
 
       {originalCaption && (

@@ -33,13 +33,13 @@ export default function ViralPredictorPage() {
   return (
     <main className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border glass">
+      <header className="sticky top-0 z-50 border-b border-border/50 glass">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-primary/50 to-chart-2/50 opacity-75 blur" />
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-card border border-border">
-                <TrendingUp className="h-5 w-5 text-primary" />
+              <div className="absolute -inset-1.5 rounded-xl bg-gradient-to-r from-primary via-accent to-chart-5 opacity-60 blur-md animate-gradient" />
+              <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-lg">
+                <TrendingUp className="h-5 w-5 text-white" />
               </div>
             </div>
             <div>
@@ -75,9 +75,12 @@ export default function ViralPredictorPage() {
           /* Input State */
           <div className="space-y-8">
             {/* Hero Section */}
-            <div className="text-center space-y-4 py-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary">
-                <Sparkles className="h-3.5 w-3.5" />
+            <div className="relative text-center space-y-4 py-8">
+              {/* Background mesh gradient */}
+              <div className="absolute inset-0 bg-gradient-mesh opacity-50 -z-10" />
+              
+              <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-gradient-to-r from-primary/10 to-accent/10 px-4 py-1.5 text-xs font-medium text-accent">
+                <Sparkles className="h-3.5 w-3.5 animate-pulse" />
                 Powered by Gemini AI
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground text-balance">
@@ -130,7 +133,7 @@ export default function ViralPredictorPage() {
               <Button
                 onClick={analyze}
                 disabled={!canAnalyze}
-                className="h-12 px-8 text-base font-medium gap-2.5 glow-sm hover:glow-primary transition-all duration-300"
+                className="h-12 px-8 text-base font-medium gap-2.5 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 glow-sm hover:glow-primary transition-all duration-300 border-0"
                 size="lg"
               >
                 {isAnalyzing ? (
@@ -149,27 +152,30 @@ export default function ViralPredictorPage() {
 
             {/* Feature Cards */}
             <div className="grid sm:grid-cols-3 gap-4 pt-6">
-              <div className="rounded-xl border border-border bg-card p-5 card-hover">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 mb-4">
-                  <Zap className="h-5 w-5 text-primary" />
+              <div className="group relative rounded-xl border border-primary/20 bg-gradient-to-br from-primary/5 to-transparent p-5 card-hover overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -z-10 group-hover:bg-primary/20 transition-all" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 mb-4 shadow-lg shadow-primary/20">
+                  <Zap className="h-5 w-5 text-primary-foreground" />
                 </div>
                 <h3 className="font-semibold text-foreground mb-1">Instant Analysis</h3>
                 <p className="text-sm text-muted-foreground">
                   Get detailed virality predictions in seconds with AI-powered insights.
                 </p>
               </div>
-              <div className="rounded-xl border border-border bg-card p-5 card-hover">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-chart-2/10 mb-4">
-                  <BarChart3 className="h-5 w-5 text-chart-2" />
+              <div className="group relative rounded-xl border border-accent/20 bg-gradient-to-br from-accent/5 to-transparent p-5 card-colorful overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl -z-10 group-hover:bg-accent/20 transition-all" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent/70 mb-4 shadow-lg shadow-accent/20">
+                  <BarChart3 className="h-5 w-5 text-accent-foreground" />
                 </div>
                 <h3 className="font-semibold text-foreground mb-1">Detailed Metrics</h3>
                 <p className="text-sm text-muted-foreground">
                   Hook strength, emotional appeal, trend alignment, and more.
                 </p>
               </div>
-              <div className="rounded-xl border border-border bg-card p-5 card-hover">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-chart-4/10 mb-4">
-                  <MessageSquare className="h-5 w-5 text-chart-4" />
+              <div className="group relative rounded-xl border border-chart-4/20 bg-gradient-to-br from-chart-4/5 to-transparent p-5 card-hover overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-chart-4/10 rounded-full blur-3xl -z-10 group-hover:bg-chart-4/20 transition-all" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-chart-4 to-chart-4/70 mb-4 shadow-lg shadow-chart-4/20">
+                  <MessageSquare className="h-5 w-5 text-white" />
                 </div>
                 <h3 className="font-semibold text-foreground mb-1">Caption Rewriter</h3>
                 <p className="text-sm text-muted-foreground">
@@ -188,8 +194,10 @@ export default function ViralPredictorPage() {
             </div>
 
             {/* Score Display */}
-            <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-8">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-chart-2/5" />
+            <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-card p-8">
+              <div className="absolute inset-0 bg-gradient-mesh" />
+              <div className="absolute top-0 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-3xl -z-10" />
+              <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent/20 rounded-full blur-3xl -z-10" />
               <div className="relative flex flex-col items-center gap-6">
                 <ViralityScore score={result.score} size="lg" />
                 <div className="text-center">

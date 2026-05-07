@@ -124,13 +124,17 @@ export function MediaUploader({ media, onMediaChange, disabled }: MediaUploaderP
       onDragOver={handleDragOver}
       className={cn(
         "group relative flex cursor-pointer flex-col items-center justify-center gap-5",
-        "rounded-xl border-2 border-dashed border-border bg-card/50 min-h-[220px]",
-        "transition-all duration-300",
-        "hover:border-primary/40 hover:bg-card hover:shadow-lg hover:shadow-primary/5",
+        "rounded-xl border-2 border-dashed border-primary/30 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 min-h-[220px]",
+        "transition-all duration-300 overflow-hidden",
+        "hover:border-primary/50 hover:bg-gradient-to-br hover:from-primary/10 hover:via-transparent hover:to-accent/10 hover:shadow-xl hover:shadow-primary/10",
         disabled && "pointer-events-none opacity-50"
       )}
       onClick={() => !disabled && inputRef.current?.click()}
     >
+      {/* Background gradient orbs */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -z-10 group-hover:bg-primary/20 transition-all" />
+      <div className="absolute bottom-0 left-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl -z-10 group-hover:bg-accent/20 transition-all" />
+      
       <input
         ref={inputRef}
         type="file"
@@ -142,16 +146,16 @@ export function MediaUploader({ media, onMediaChange, disabled }: MediaUploaderP
       
       {/* Animated upload icon */}
       <div className="relative">
-        <div className="absolute -inset-3 rounded-2xl bg-gradient-to-r from-primary/20 to-chart-2/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
-        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-chart-2/10 border border-primary/10 transition-transform duration-300 group-hover:scale-110">
-          <CloudUpload className="h-8 w-8 text-primary transition-transform duration-300 group-hover:-translate-y-0.5" />
+        <div className="absolute -inset-4 rounded-2xl bg-gradient-to-r from-primary/30 via-accent/20 to-chart-5/30 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100 animate-gradient" />
+        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent border border-white/10 shadow-lg shadow-primary/30 transition-transform duration-300 group-hover:scale-110">
+          <CloudUpload className="h-8 w-8 text-white transition-transform duration-300 group-hover:-translate-y-0.5" />
         </div>
       </div>
       
       <div className="text-center space-y-1.5">
         <p className="font-semibold text-foreground">Upload media</p>
         <p className="text-sm text-muted-foreground">
-          Drag and drop or <span className="text-primary">browse</span>
+          Drag and drop or <span className="text-gradient font-medium">browse</span>
         </p>
         <p className="text-xs text-muted-foreground/70">
           PNG, JPG, GIF, MP4 up to 50MB

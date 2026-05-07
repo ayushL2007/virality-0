@@ -62,12 +62,13 @@ function getScoreBarGradient(score: number): string {
 
 export function AnalysisCard({ breakdown }: AnalysisCardProps) {
   return (
-    <div className="rounded-xl border border-border bg-card p-6 card-hover">
+    <div className="relative rounded-xl border border-primary/20 bg-card p-6 card-hover overflow-hidden">
+      <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-primary/10 to-transparent rounded-full blur-2xl -z-10" />
       <div className="flex items-center justify-between mb-5">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-primary">
           Breakdown
         </h3>
-        <div className="h-px flex-1 mx-4 bg-gradient-to-r from-border to-transparent" />
+        <div className="h-px flex-1 mx-4 bg-gradient-to-r from-primary/30 to-transparent" />
       </div>
       
       <div className="space-y-5">

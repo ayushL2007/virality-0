@@ -83,6 +83,13 @@ export function ViralityScore({ score, size = "md" }: ViralityScoreProps) {
 
       {/* Progress ring */}
       <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="oklch(0.75 0.18 180)" />
+            <stop offset="50%" stopColor="oklch(0.80 0.16 320)" />
+            <stop offset="100%" stopColor="oklch(0.70 0.22 265)" />
+          </linearGradient>
+        </defs>
         {/* Track */}
         <circle
           cx="50"
@@ -99,15 +106,14 @@ export function ViralityScore({ score, size = "md" }: ViralityScoreProps) {
           cy="50"
           r="45"
           fill="none"
-          stroke="currentColor"
-          strokeWidth="4"
+          stroke="url(#scoreGradient)"
+          strokeWidth="5"
           strokeLinecap="round"
-          className={color}
           style={{
             strokeDasharray: circumference,
             strokeDashoffset,
             transition: "stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1)",
-            filter: "drop-shadow(0 0 8px currentColor)",
+            filter: "drop-shadow(0 0 12px oklch(0.75 0.18 180 / 0.5))",
           }}
         />
       </svg>
