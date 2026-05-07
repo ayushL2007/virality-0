@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     const userPrompt = buildUserPrompt(caption, mediaType)
 
     const { object: result } = await generateObject({
-      model: google("gemini-2.0-flash"),
+      model: google("gemini-2.5-flash-lite"),
       schema: analysisSchema,
       prompt: userPrompt,
       system: SYSTEM_PROMPT,
