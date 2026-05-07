@@ -12,78 +12,101 @@ const METRICS = [
   {
     key: "hookStrength" as const,
     label: "Hook Strength",
-    description: "How attention-grabbing is your opening?",
+    description: "Opening attention-grab power",
     icon: Zap,
+    gradient: "from-amber-500 to-orange-500",
   },
   {
     key: "emotionalAppeal" as const,
     label: "Emotional Appeal",
-    description: "Does it evoke strong emotions?",
+    description: "Emotional resonance level",
     icon: Heart,
+    gradient: "from-pink-500 to-rose-500",
   },
   {
     key: "trendAlignment" as const,
     label: "Trend Alignment",
-    description: "How well does it tap into current trends?",
+    description: "Current trend relevance",
     icon: TrendingUp,
+    gradient: "from-primary to-chart-2",
   },
   {
     key: "timing" as const,
     label: "Timing",
-    description: "Is this relevant right now?",
+    description: "Optimal posting timing",
     icon: Clock,
+    gradient: "from-violet-500 to-purple-500",
   },
   {
     key: "visualImpact" as const,
     label: "Visual Impact",
-    description: "How visually striking is the content?",
+    description: "Visual attention score",
     icon: Eye,
+    gradient: "from-blue-500 to-cyan-500",
   },
 ]
 
 function getScoreColor(score: number): string {
-  if (score >= 80) return "bg-emerald-500"
-  if (score >= 60) return "bg-primary"
-  if (score >= 40) return "bg-amber-500"
-  return "bg-red-500"
-}
-
-function getScoreTextColor(score: number): string {
   if (score >= 80) return "text-emerald-400"
   if (score >= 60) return "text-primary"
   if (score >= 40) return "text-amber-400"
   return "text-red-400"
 }
 
+function getScoreBarGradient(score: number): string {
+  if (score >= 80) return "from-emerald-500 to-emerald-400"
+  if (score >= 60) return "from-primary to-chart-2"
+  if (score >= 40) return "from-amber-500 to-amber-400"
+  return "from-red-500 to-red-400"
+}
+
 export function AnalysisCard({ breakdown }: AnalysisCardProps) {
   return (
-    <div className="space-y-4 rounded-xl border border-border bg-card p-5">
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Breakdown
-      </h3>
-      <div className="space-y-4">
+    <div className="rounded-xl border border-border bg-card p-6 card-hover">
+      <div className="flex items-center justify-between mb-5">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Breakdown
+        </h3>
+        <div className="h-px flex-1 mx-4 bg-gradient-to-r from-border to-transparent" />
+      </div>
+      
+      <div className="space-y-5">
         {METRICS.map((metric) => {
           const score = breakdown[metric.key]
           const Icon = metric.icon
 
           return (
-            <div key={metric.key} className="space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Icon className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium text-foreground">{metric.label}</span>
+            <div key={metric.key} className="group">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    "flex h-8 w-8 items-center justify-center rounded-lg",
+                    "bg-gradient-to-br opacity-80 group-hover:opacity-100 transition-opacity",
+                    metric.gradient
+                  )}>
+                    <Icon className="h-4 w-4 text-white" />
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium text-foreground">{metric.label}</span>
+                    <p className="text-xs text-muted-foreground">{metric.description}</p>
+                  </div>
                 </div>
-                <span className={cn("text-sm font-bold tabular-nums", getScoreTextColor(score))}>
+                <span className={cn("text-lg font-bold tabular-nums", getScoreColor(score))}>
                   {score}
                 </span>
               </div>
               <div className="relative h-2 overflow-hidden rounded-full bg-secondary">
                 <div
-                  className={cn("h-full rounded-full transition-all duration-700 ease-out", getScoreColor(score))}
-                  style={{ width: `${score}%` }}
+                  className={cn(
+                    "h-full rounded-full bg-gradient-to-r transition-all duration-700 ease-out",
+                    getScoreBarGradient(score)
+                  )}
+                  style={{ 
+                    width: `${score}%`,
+                    boxShadow: score >= 60 ? '0 0 12px currentColor' : 'none',
+                  }}
                 />
               </div>
-              <p className="text-xs text-muted-foreground">{metric.description}</p>
             </div>
           )
         })}
