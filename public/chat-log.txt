@@ -101,4 +101,31 @@ No additional setup required - ready to use in preview immediately.
 
 ---
 
+## Reflection
+
+### What I Learned
+
+**1. Flexibility in AI Provider Selection**
+The most valuable lesson from this project was learning to pivot quickly when requirements changed. Starting with Groq (which required an API key), I adapted to use the Vercel AI Gateway with Google Gemini when the user requested a free, zero-config solution. This taught me that modern AI development should prioritize accessibility and ease of deployment.
+
+**2. Reference Repository as a Foundation**
+Using the 8xsocial/template-mobile reference repository accelerated development significantly. By studying its architecture (theme system, component patterns, hooks structure), I could ensure consistency with established patterns rather than inventing new ones. This approach reduced friction and improved code maintainability.
+
+**3. Session-Based State for Prototyping**
+Choosing session-only storage (no database) for this feature was a deliberate tradeoff. While it limits persistence, it dramatically simplified the implementation and allowed faster iteration. For a "Viral Predictor" feature that analyzes content in real-time, this ephemeral approach actually aligns well with the use case.
+
+**4. Type-Safe AI Responses with Zod**
+Using Zod schemas with the AI SDK's `generateObject()` function ensured that AI responses matched expected formats. This eliminated runtime errors from malformed AI outputs and made the codebase more robust.
+
+**5. Component Modularity**
+Breaking the feature into discrete components (MediaUploader, ViralityScore, AnalysisCard, CaptionRewriter, BenchmarkChart) made the code easier to test, maintain, and extend. Each component has a single responsibility, making future modifications straightforward.
+
+### What I Would Do Differently
+
+- Add error boundary components around AI-dependent sections
+- Implement optimistic UI updates during analysis
+- Consider adding local caching for repeated analyses of the same media
+
+---
+
 *End of Chat Log*
