@@ -1,15 +1,31 @@
 import { NextResponse } from "next/server"
-import Groq from "groq-sdk"
-
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-})
+import { generateObject } from "ai"
+import { google } from "@ai-sdk/google"
+import { z } from "zod"
 
 interface AnalyzeRequest {
   mediaUrl: string | null
   mediaType: "image" | "video" | null
   caption: string
 }
+
+const analysisSchema = z.object({
+  score: z.number().min(0).max(100),
+  breakdown: z.object({
+    hookStrength: z.number().min(0).max(100),
+    emotionalAppeal: z.number().min(0).max(100),
+    trendAlignment: z.number().min(0).max(100),
+    timing: z.number().min(0).max(100),
+    visualImpact: z.number().min(0).max(100),
+  }),
+  suggestions: z.array(z.string()).max(5),
+  rewrittenCaptions: z.array(z.string()).max(3),
+  benchmarkComparison: z.object({
+    category: z.string(),
+    averageScore: z.number().min(0).max(100),
+    topPerformerScore: z.number().min(0).max(100),
+  }),
+})
 
 const SYSTEM_PROMPT = `You are an expert social media virality analyst. Analyze content for its viral potential and provide detailed, actionable feedback.
 
@@ -55,46 +71,14 @@ export async function POST(request: Request) {
 
     const userPrompt = buildUserPrompt(caption, mediaType)
 
-    const completion = await groq.chat.completions.create({
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: userPrompt },
-      ],
-      model: "llama-3.3-70b-versatile",
-      temperature: 0.7,
-      max_tokens: 1024,
-      response_format: { type: "json_object" },
+    const { object: result } = await generateObject({
+      model: google("gemini-2.0-flash"),
+      schema: analysisSchema,
+      prompt: userPrompt,
+      system: SYSTEM_PROMPT,
     })
 
-    const responseText = completion.choices[0]?.message?.content
-    if (!responseText) {
-      throw new Error("No response from AI")
-    }
-
-    const result = JSON.parse(responseText)
-
-    // Validate and normalize the response
-    const normalizedResult = {
-      score: clamp(result.score ?? 50, 0, 100),
-      breakdown: {
-        hookStrength: clamp(result.breakdown?.hookStrength ?? 50, 0, 100),
-        emotionalAppeal: clamp(result.breakdown?.emotionalAppeal ?? 50, 0, 100),
-        trendAlignment: clamp(result.breakdown?.trendAlignment ?? 50, 0, 100),
-        timing: clamp(result.breakdown?.timing ?? 50, 0, 100),
-        visualImpact: clamp(result.breakdown?.visualImpact ?? 50, 0, 100),
-      },
-      suggestions: Array.isArray(result.suggestions) ? result.suggestions.slice(0, 5) : [],
-      rewrittenCaptions: Array.isArray(result.rewrittenCaptions)
-        ? result.rewrittenCaptions.slice(0, 3)
-        : [],
-      benchmarkComparison: {
-        category: result.benchmarkComparison?.category ?? "General",
-        averageScore: clamp(result.benchmarkComparison?.averageScore ?? 45, 0, 100),
-        topPerformerScore: clamp(result.benchmarkComparison?.topPerformerScore ?? 85, 0, 100),
-      },
-    }
-
-    return NextResponse.json(normalizedResult)
+    return NextResponse.json(result)
   } catch (error) {
     console.error("[Analyze API Error]", error)
     return NextResponse.json(
@@ -127,6 +111,4 @@ function buildUserPrompt(caption: string, mediaType: "image" | "video" | null): 
   return parts.join("\n")
 }
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value))
-}
+
