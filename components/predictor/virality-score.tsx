@@ -2,6 +2,7 @@
 
 import { useMemo } from "react"
 import { cn } from "@/lib/utils"
+import { Flame, TrendingUp, Minus, AlertTriangle } from "lucide-react"
 
 interface ViralityScoreProps {
   score: number
@@ -9,53 +10,57 @@ interface ViralityScoreProps {
 }
 
 export function ViralityScore({ score, size = "md" }: ViralityScoreProps) {
-  const { label, color, bgColor } = useMemo(() => {
+  const { label, color, bgGradient, Icon } = useMemo(() => {
     if (score >= 80) {
       return {
         label: "Viral Potential",
         color: "text-emerald-400",
-        bgColor: "from-emerald-500/20 to-emerald-500/5",
+        bgGradient: "from-emerald-500/30 via-emerald-500/10 to-transparent",
+        Icon: Flame,
       }
     }
     if (score >= 60) {
       return {
         label: "High Potential",
         color: "text-primary",
-        bgColor: "from-primary/20 to-primary/5",
+        bgGradient: "from-primary/30 via-primary/10 to-transparent",
+        Icon: TrendingUp,
       }
     }
     if (score >= 40) {
       return {
         label: "Moderate",
         color: "text-amber-400",
-        bgColor: "from-amber-500/20 to-amber-500/5",
+        bgGradient: "from-amber-500/30 via-amber-500/10 to-transparent",
+        Icon: Minus,
       }
     }
     return {
       label: "Needs Work",
       color: "text-red-400",
-      bgColor: "from-red-500/20 to-red-500/5",
+      bgGradient: "from-red-500/30 via-red-500/10 to-transparent",
+      Icon: AlertTriangle,
     }
   }, [score])
 
   const sizeClasses = {
     sm: {
-      container: "h-24 w-24",
-      score: "text-2xl",
+      container: "h-28 w-28",
+      score: "text-3xl",
       label: "text-[10px]",
-      ring: "32",
+      iconSize: "h-3 w-3",
     },
     md: {
-      container: "h-36 w-36",
-      score: "text-4xl",
+      container: "h-40 w-40",
+      score: "text-5xl",
       label: "text-xs",
-      ring: "48",
+      iconSize: "h-4 w-4",
     },
     lg: {
-      container: "h-48 w-48",
-      score: "text-5xl",
+      container: "h-52 w-52",
+      score: "text-6xl",
       label: "text-sm",
-      ring: "64",
+      iconSize: "h-5 w-5",
     },
   }
 
@@ -65,16 +70,26 @@ export function ViralityScore({ score, size = "md" }: ViralityScoreProps) {
 
   return (
     <div className={cn("relative flex items-center justify-center", s.container)}>
-      {/* Background gradient */}
+      {/* Background glow effect */}
       <div
         className={cn(
-          "absolute inset-0 rounded-full bg-gradient-to-b opacity-50",
-          bgColor
+          "absolute inset-0 rounded-full bg-gradient-radial opacity-60 blur-2xl",
+          bgGradient
         )}
       />
 
+      {/* Outer ring decorative */}
+      <div className="absolute inset-2 rounded-full border border-border/50" />
+
       {/* Progress ring */}
       <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="oklch(0.75 0.18 180)" />
+            <stop offset="50%" stopColor="oklch(0.80 0.16 320)" />
+            <stop offset="100%" stopColor="oklch(0.70 0.22 265)" />
+          </linearGradient>
+        </defs>
         {/* Track */}
         <circle
           cx="50"
@@ -82,8 +97,8 @@ export function ViralityScore({ score, size = "md" }: ViralityScoreProps) {
           r="45"
           fill="none"
           stroke="currentColor"
-          strokeWidth="6"
-          className="text-border"
+          strokeWidth="4"
+          className="text-secondary"
         />
         {/* Progress */}
         <circle
@@ -91,24 +106,27 @@ export function ViralityScore({ score, size = "md" }: ViralityScoreProps) {
           cy="50"
           r="45"
           fill="none"
-          stroke="currentColor"
-          strokeWidth="6"
+          stroke="url(#scoreGradient)"
+          strokeWidth="5"
           strokeLinecap="round"
-          className={color}
           style={{
             strokeDasharray: circumference,
             strokeDashoffset,
-            transition: "stroke-dashoffset 1s ease-out",
+            transition: "stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1)",
+            filter: "drop-shadow(0 0 12px oklch(0.75 0.18 180 / 0.5))",
           }}
         />
       </svg>
 
       {/* Center content */}
-      <div className="relative flex flex-col items-center justify-center">
-        <span className={cn("font-bold tabular-nums", s.score, color)}>{score}</span>
-        <span className={cn("font-medium uppercase tracking-wider text-muted-foreground", s.label)}>
-          {label}
+      <div className="relative flex flex-col items-center justify-center gap-1">
+        <span className={cn("font-bold tabular-nums tracking-tight", s.score, color)}>
+          {score}
         </span>
+        <div className={cn("flex items-center gap-1.5 font-medium uppercase tracking-wider text-muted-foreground", s.label)}>
+          <Icon className={cn(s.iconSize, color)} />
+          {label}
+        </div>
       </div>
     </div>
   )
