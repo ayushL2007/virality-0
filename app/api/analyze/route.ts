@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { generateObject } from "ai"
-import { google } from "@ai-sdk/google"
+import { gateway } from "@ai-sdk/gateway"
 import { z } from "zod"
 
 interface AnalyzeRequest {
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     const userPrompt = buildUserPrompt(caption, mediaType)
 
     const { object: result } = await generateObject({
-      model: google("gemini-2.0-flash"),
+      model: gateway("google/gemini-2.0-flash"),
       schema: analysisSchema,
       prompt: userPrompt,
       system: SYSTEM_PROMPT,
